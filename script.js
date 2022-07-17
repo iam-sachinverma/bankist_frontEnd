@@ -158,8 +158,24 @@ const handleHover = function (e) {
   }
 };
 
-// Todo : Pass arugement in event handler func using bind() method
+// Todo : Pass arugement in event handler func is NOT POSSIBLE but we choose tricky approach to set THIS keyword using bind() method
 nav.addEventListener('mouseover', handleHover.bind(0.5));
 
 // * to undo mouseover we need opposite event of mouseover : mouseout
 nav.addEventListener('mouseout', handleHover.bind(1));
+
+// ! Sticky Navigation --
+// Legacy Approach -- bad performance becoz scroll event trigger every time
+
+// * Get coordinates from which point we want nav to be sticky
+const initialCoords = section1.getBoundingClientRect();
+
+// * now perform scroll event on window
+window.addEventListener('scroll', function () {
+  // * curr scroll Y
+  if (window.scrollY > initialCoords.top) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
+});
