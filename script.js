@@ -97,10 +97,47 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 
   //   ! Matching strategy
   //   *here we get the target on which event happend inside parent div and match it with our taget clss
+
   if (e.target.classList.contains('nav__link')) {
     const id = e.target.getAttribute('href');
     document.querySelector(id).scrollIntoView({
       behavior: 'smooth',
     });
   }
+});
+
+// ! Tabbed component
+
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', function (e) {
+  // Todo We have to handle span element with button with closest() to select genral parent class
+  // * closest() is important in event delegation
+
+  const clicked = e.target.closest('.operations__tab');
+
+  // * if we click outside tabConatiner it return NULL beacuse closest()
+  // * cannot find specific class to handle this case we use
+  // Guard clause
+  if (!clicked) return;
+
+  // * Remove active classes
+  // down all other unclicked tab
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+
+  // active content remove
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'));
+
+  // * Active tab or Up tab
+  clicked.classList.add('operations__tab--active');
+
+  // * Active content
+  const data = clicked.dataset.tab;
+  console.log(data);
+
+  document
+    .querySelector(`.operations__content--${data}`)
+    .classList.add('operations__content--active');
 });
