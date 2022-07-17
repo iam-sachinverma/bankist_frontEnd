@@ -8,6 +8,12 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+const nav = document.querySelector('.nav');
+
 ///////////////////////////////////////
 // Modal window
 
@@ -108,10 +114,6 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 
 // ! Tabbed component
 
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContent = document.querySelectorAll('.operations__content');
-
 tabsContainer.addEventListener('click', function (e) {
   // Todo We have to handle span element with button with closest() to select genral parent class
   // * closest() is important in event delegation
@@ -135,9 +137,29 @@ tabsContainer.addEventListener('click', function (e) {
 
   // * Active content
   const data = clicked.dataset.tab;
-  console.log(data);
 
   document
     .querySelector(`.operations__content--${data}`)
     .classList.add('operations__content--active');
 });
+
+// ! Menu Fade Animation
+
+const handleHover = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const sibilings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    sibilings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+  }
+};
+
+// Todo : Pass arugement in event handler func using bind() method
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+
+// * to undo mouseover we need opposite event of mouseover : mouseout
+nav.addEventListener('mouseout', handleHover.bind(1));
