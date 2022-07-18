@@ -233,3 +233,35 @@ allSections.forEach(function (section) {
   sectionObserver.observe(section);
   section.classList.add('section--hidden');
 });
+
+// ! Laxy Loading  Images -- It is optimal approach for fast site load or improve slow internet user experience
+
+// select tag with specific property
+// * img[data-src] img tag with data-src property
+const imgTargets = document.querySelectorAll('img[data-src]');
+
+const loadImg = function (entries, observer) {
+  const [entry] = entries;
+  // console.log(entry);
+
+  if (!entry.isIntersecting) return;
+
+  // Replace src with data-src (low quality to high)
+  entry.target.src = entry.target.dataset.src;
+
+  // Todo we improve image loading using load event to load them in background and then represnt (remove blur class in my example)
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  // rootMargin: '100px',
+  // Todo we can also use rootMargin to load image before target reach
+});
+
+imgTargets.forEach(img => imgObserver.observe(img));
