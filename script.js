@@ -164,18 +164,43 @@ nav.addEventListener('mouseover', handleHover.bind(0.5));
 // * to undo mouseover we need opposite event of mouseover : mouseout
 nav.addEventListener('mouseout', handleHover.bind(1));
 
-// ! Sticky Navigation --
-// Legacy Approach -- bad performance becoz scroll event trigger every time
+// ! Naive Approach Sticky Navigation --
+// // Legacy Approach -- bad performance becoz scroll event trigger every time
 
-// * Get coordinates from which point we want nav to be sticky
-const initialCoords = section1.getBoundingClientRect();
+// // * Get coordinates from which point we want nav to be sticky
+// const initialCoords = section1.getBoundingClientRect();
 
-// * now perform scroll event on window
-window.addEventListener('scroll', function () {
-  // * curr scroll Y
-  if (window.scrollY > initialCoords.top) {
-    nav.classList.add('sticky');
-  } else {
+// // * now perform scroll event on window
+// window.addEventListener('scroll', function () {
+//   // * curr scroll Y
+//   if (window.scrollY > initialCoords.top) {
+//     nav.classList.add('sticky');
+//   } else {
+//     nav.classList.remove('sticky');
+//   }
+// });
+
+// ! Optimal Approach Sticky Navigation using Intersection Observer APi
+
+const header = document.querySelector('.header');
+
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  console.log(entries);
+
+  if (entry.isIntersecting) {
     nav.classList.remove('sticky');
+  } else {
+    nav.classList.add('sticky');
   }
-});
+};
+
+const options = {
+  root: null,
+  threshold: 0, // when 0% header visbile viewport then we show sticky navbar
+  rootMargin: '-90px', // visual margin box of 90 px appleid out of target elemtn
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, options);
+// *target element
+headerObserver.observe(header);
