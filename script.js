@@ -14,6 +14,8 @@ const tabsContent = document.querySelectorAll('.operations__content');
 
 const nav = document.querySelector('.nav');
 
+const header = document.querySelector('.header');
+
 ///////////////////////////////////////
 // Modal window
 
@@ -182,11 +184,12 @@ nav.addEventListener('mouseout', handleHover.bind(1));
 
 // ! Optimal Approach Sticky Navigation using Intersection Observer APi
 
-const header = document.querySelector('.header');
+// * get height of nav using getBCR();
+const navHeight = nav.getBoundingClientRect().height;
 
 const stickyNav = function (entries) {
   const [entry] = entries;
-  console.log(entries);
+  // console.log(entries);
 
   if (entry.isIntersecting) {
     nav.classList.remove('sticky');
@@ -198,9 +201,35 @@ const stickyNav = function (entries) {
 const options = {
   root: null,
   threshold: 0, // when 0% header visbile viewport then we show sticky navbar
-  rootMargin: '-90px', // visual margin box of 90 px appleid out of target elemtn
+  rootMargin: `-${navHeight}px`, // visual margin box of 90 px appleid out of target elemtn
 };
 
 const headerObserver = new IntersectionObserver(stickyNav, options);
 // *target element
 headerObserver.observe(header);
+
+// ! Reveal Sections
+
+// * all elements which we want to obeserve
+const allSections = document.querySelectorAll('.section');
+
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) return;
+
+  entry.target.classList.remove('section--hidden');
+
+  observer.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+// * observe multiple elements
+allSections.forEach(function (section) {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
