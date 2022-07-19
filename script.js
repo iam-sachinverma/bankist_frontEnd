@@ -260,7 +260,7 @@ const loadImg = function (entries, observer) {
 const imgObserver = new IntersectionObserver(loadImg, {
   root: null,
   threshold: 0,
-  // rootMargin: '100px',
+  rootMargin: '200px',
   // Todo we can also use rootMargin to load image before target reach
 });
 
