@@ -231,7 +231,7 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 // * observe multiple elements
 allSections.forEach(function (section) {
   sectionObserver.observe(section);
-  // section.classList.add('section--hidden');
+  section.classList.add('section--hidden');
 });
 
 // ! Lazy Loading  Images -- It is optimal approach for fast site load or improve slow internet user experience
